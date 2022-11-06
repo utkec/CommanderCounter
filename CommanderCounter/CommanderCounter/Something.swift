@@ -5,10 +5,13 @@
 //  Created by Casey Utke on 10/24/22.
 //
 
+// CHANGE THE NAME OF THIS IN THE FUTURE. SOMETHING.SWIFT IS AN AWFUL NAME
+
 import SwiftUI
 
 struct Something: View {
     
+    var flipped = false
     @State var lifeTotal = 40
     @State var cDamage1 = 0
     @State var cDamage2 = 0
@@ -17,17 +20,22 @@ struct Something: View {
     
     var body: some View {
         VStack{
+            // COMMANDER DAMAGE 1, COMMANDER DAMAGE 2
             HStack {
                 Text(cDamage1.description)
                     .onTapGesture {
                         activeCounter = .command1
                     }
                 Spacer()
-                Text("14")
+                Text(cDamage2.description)
+                    .onTapGesture {
+                        activeCounter = .command2
+                    }
             }
             Spacer()
+            // LIFE TOTAL OR ACTIVE COUNTER
             VStack {
-                Button("+", action: (addLife)).font(.largeTitle)
+                Button("+", action: (addToCounter)).font(.largeTitle)
                 // Check which active counter is active, pass object to ActiveCounterTotal.swift
                 switch activeCounter {
                 case .life:
@@ -40,33 +48,54 @@ struct Something: View {
                     ActiveCounterTotal(counterTotal: cDamage3, activeCounter: activeCounter)
                 }
                 
-                Button("-", action: removeLife).font(.largeTitle)
+                Button("-", action: removeFromCounter).font(.largeTitle)
             }
             Spacer()
+            
+            // COMMANDER DAMAGE 3 OR LIFE TOTAL TEMP PLACE
+            // Need to figure out how to pass through if a view is flipped or not
             HStack {
-                Text("12")
+                Text(lifeTotal.description).font(.largeTitle)
+                    .onTapGesture {
+                        activeCounter = .life
+                    }
                 Spacer()
                 Text("14")
             }
         }
     }
-    func addLife() {
-        lifeTotal += 1
+    func addToCounter() {
+        if (activeCounter == .life) {
+            lifeTotal += 1
+        } else if (activeCounter == .command1) {
+            cDamage1 += 1
+            lifeTotal -= 1
+        } else if (activeCounter == .command2) {
+            cDamage2 += 1
+            lifeTotal -= 1
+        } else if (activeCounter == .command3) {
+            cDamage3 += 1
+            lifeTotal -= 1
+        }
     }
-    func removeLife() {
-        lifeTotal -= 1
-    }
-    func addCDamage() {
-        
-    }
-    func removeCDamage() {
-        
+    func removeFromCounter() {
+        if (activeCounter == .life) {
+            lifeTotal -= 1
+        } else if (activeCounter == .command1) {
+            cDamage1 -= 1
+            lifeTotal += 1
+        } else if (activeCounter == .command2) {
+            cDamage2 -= 1
+            lifeTotal += 1
+        } else if (activeCounter == .command3) {
+            cDamage3 -= 1
+            lifeTotal += 1
+        }
     }
     
-}
-
-struct something_Previews: PreviewProvider {
-    static var previews: some View {
-        Something()
+    struct something_Previews: PreviewProvider {
+        static var previews: some View {
+            Something()
+        }
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+    // TO DO: Change the name of Something()
     var body: some View {
         VStack {
             HStack {
